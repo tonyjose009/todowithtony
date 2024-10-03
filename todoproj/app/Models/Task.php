@@ -13,10 +13,11 @@ class Task extends Model
 
     protected $fillable = [
         'id',
-        'name',
+        'title',
         'description',
         'project_id',
-        'priority'
+        'priority',
+        'status'
     ];
 
     // accessor
