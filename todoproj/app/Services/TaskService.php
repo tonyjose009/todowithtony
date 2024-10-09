@@ -15,16 +15,20 @@ use Illuminate\Pagination\Paginator;
 class TaskService
 {
 
-    public function list(int $projectId)
+    public function list()
     {
 
         $tasks = Task::all();
         return  $tasks->sortByDesc('priority');
     }
 
-    public function getById(int $projectId){
-        $task = Task::find($projectId);
+    public function getById(int $taskId){
+        $task = Task::find($taskId);
         return $task;
+    }
+
+    public function update(int $taskId, $task){
+        return Task::find($taskId)->update($task);
     }
 
     //other functions are pending to add

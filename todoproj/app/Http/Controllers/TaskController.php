@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Task\GetTaskRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\Task\CreateTaskRequest;
 use App\Http\Requests\Task\ListTasksRequest;
@@ -40,13 +41,27 @@ class TaskController extends Controller
         return response()->json([
             'success' => true,
             'tasks' => $tasks,
-            'message' => "Tasks retrieved successfully.",
+            'message' => "Tasks retrieved successfully",
         ]);
         // 200
     }
 
-    public function get()
+    public function get(int $task_id)
     {
+
+        $task = $this->taskService->getById($task_id);
+        if($task){
+            return  response()->json([
+                'success' => true,
+                'task' => $task,
+                'message' => "task retrieved successfully",
+            ]);
+        } else {
+            return  response()->json([
+                'success' => false,
+                'message' => "task not found",
+            ], 404);
+        }
 
     }
 
@@ -55,9 +70,21 @@ class TaskController extends Controller
 
     }
 
-    public function update()
-    {
 
+    public function update(UpdateTaskRequest $request, int $taskId)
+    {
+       $up = $this->taskService->update($taskId, $request->all());
+       if($up) {
+           return  response()->json([
+               'success' => true,
+               'message' => "task updated successfully",
+           ]);
+       } else {
+           return  response()->json([
+               'success' => false,
+               'message' => "task not updated",
+           ], 404);
+       }
     }
 
     public function delete()
