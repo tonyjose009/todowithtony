@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\GetTaskRequest;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use App\Http\Requests\Task\CreateTaskRequest;
 use App\Http\Requests\Task\ListTasksRequest;
@@ -65,9 +66,23 @@ class TaskController extends Controller
 
     }
 
-    public function store()
+    public function store(CreateTaskRequest $request)
     {
 
+        $ret = $this->taskService->store($request->all());
+        if($ret){
+            return  response()->json([
+                'success' => true,
+                'message' => "task created successfully",
+            ]);
+        } else {
+            return  response()->json([
+                'success' => false,
+                'message' => "",
+            ]);
+        }
+
+        echo "reached at creation =".$request['project_id'];
     }
 
 

@@ -31,6 +31,10 @@ class TaskService
         return Task::find($taskId)->update($task);
     }
 
+    public function store($taskData){
+        return Task::create($taskData);
+    }
+
     //other functions are pending to add
 
 }
