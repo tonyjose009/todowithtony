@@ -19,7 +19,8 @@ class TaskService
     {
 
         $tasks = Task::all();
-        return  $tasks->sortByDesc('priority');
+//        return $tasks->sort();
+        return  $tasks->sortByDesc('id');
     }
 
     public function getById(int $taskId){
@@ -28,11 +29,29 @@ class TaskService
     }
 
     public function update(int $taskId, $task){
-        return Task::find($taskId)->update($task);
+        $taskF = Task::find($taskId);
+        if($taskF){
+            return $taskF->update($task);
+
+        }else {
+            return  false;
+        }
+
     }
 
     public function store($taskData){
         return Task::create($taskData);
+    }
+
+    public function delete($taskId){
+        $task = Task::find($taskId);
+        if($task) {
+            echo "Task found";
+            $task->delete();
+        } else {
+            echo "task not found";
+        }
+        exit;
     }
 
     //other functions are pending to add

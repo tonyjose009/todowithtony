@@ -78,11 +78,10 @@ class TaskController extends Controller
         } else {
             return  response()->json([
                 'success' => false,
-                'message' => "",
+                'message' => "error in creating task",
             ]);
         }
 
-        echo "reached at creation =".$request['project_id'];
     }
 
 
@@ -102,9 +101,9 @@ class TaskController extends Controller
        }
     }
 
-    public function delete()
+    public function delete(int $taskId)
     {
-
+        $this->taskService->delete($taskId);
     }
 
     public function reorder()
