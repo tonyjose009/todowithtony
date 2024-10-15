@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->foreignId('project_id')->references('id')->on('projects');
             $table->tinyInteger('status')->default(1); // 0=closed, 1 = open
-            $table->integer('priority')->default(1);
+            $table->integer('priority');
             $table->timestamps();
 
             $table->softDeletes();

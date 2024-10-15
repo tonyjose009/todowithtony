@@ -103,11 +103,26 @@ class TaskController extends Controller
 
     public function delete(int $taskId)
     {
-        $this->taskService->delete($taskId);
+        $ret = $this->taskService->delete($taskId);
+        if($ret == true){
+            return response()->json([
+                'success' => true,
+                'message' => "Task deleted successfully.",
+            ], 201);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => "Unable to delete task",
+            ], 404);
+        }
     }
 
-    public function reorder()
+    public function reOrder(ReorderTasksRequest $request)
     {
-
+        $project_id = $request->get('project_id');
+        $task_id = $request->get('task_id');
+        $start = $request->get('start');
+        $end = $request->get('end');
+        $this->taskService->reOrder($project_id, $task_id, $start, $end);
     }
 }
