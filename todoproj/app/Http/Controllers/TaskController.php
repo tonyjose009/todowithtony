@@ -35,16 +35,12 @@ class TaskController extends Controller
 
     public function list(ListTasksRequest $request)
     {
-//        echo "reached till here";
-//        exit;
-
         $tasks = $this->taskService->list($request->get('project_id'));
         return response()->json([
             'success' => true,
             'tasks' => $tasks,
             'message' => "Tasks retrieved successfully",
         ]);
-        // 200
     }
 
     public function get(int $task_id)
