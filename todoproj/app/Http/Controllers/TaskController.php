@@ -100,7 +100,7 @@ class TaskController extends Controller
     public function delete(int $taskId)
     {
         $ret = $this->taskService->delete($taskId);
-        if($ret == true){
+        if($ret){
             return response()->json([
                 'success' => true,
                 'message' => "Task deleted successfully.",
