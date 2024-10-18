@@ -39,6 +39,7 @@ class TaskController extends Controller
         return response()->json([
             'success' => true,
             'tasks' => $tasks,
+            "count" => count($tasks),
             'message' => "Tasks retrieved successfully",
         ]);
     }
@@ -83,18 +84,18 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, int $taskId)
     {
-       $up = $this->taskService->update($taskId, $request->all());
-       if($up) {
-           return  response()->json([
-               'success' => true,
-               'message' => "task updated successfully",
-           ]);
-       } else {
-           return  response()->json([
-               'success' => false,
-               'message' => "task not updated",
-           ], 404);
-       }
+        $up = $this->taskService->update($taskId, $request->all());
+        if($up) {
+            return  response()->json([
+                'success' => true,
+                'message' => "task updated successfully",
+            ]);
+        } else {
+            return  response()->json([
+                'success' => false,
+                'message' => "task not updated",
+            ], 404);
+        }
     }
 
     public function delete(int $taskId)
@@ -115,10 +116,20 @@ class TaskController extends Controller
 
     public function reOrder(ReorderTasksRequest $request)
     {
-        $project_id = $request->get('project_id');
-        $task_id = $request->get('task_id');
+        $project_id = $request->get('project_id');;
         $start = $request->get('start');
         $end = $request->get('end');
-        $this->taskService->reOrder($project_id, $task_id, $start, $end);
+        $reorder_status = $this->taskService->reOrder($project_id, $start, $end);
+        if($reorder_status){
+            return response()->json([
+                'success' => true,
+                'message' => "Tasks reordered successfully.",
+            ], 201);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => "Unable to reorder tasks",
+            ], 404);
+        }
     }
 }

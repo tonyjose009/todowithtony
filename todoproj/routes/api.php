@@ -15,5 +15,5 @@ Route::group(['prefix' => '/tasks', 'as' => 'tasks.'], function (){
         ->where('id', '[1-9][0-9]*');
     Route::delete('/{id}', [TaskController::class, 'delete'])
         ->where('id', '[1-9][0-9]*');
-    Route::put('/', [TaskController::class, 'reorder']);
+    Route::put('/', [TaskController::class, 'reOrder']);
 });

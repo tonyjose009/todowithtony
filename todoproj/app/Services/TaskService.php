@@ -17,12 +17,12 @@ use function PHPUnit\Framework\isEmpty;
 class TaskService
 {
 
-    public function list()
+    public function list(int $projectId)
     {
 
-        $tasks = Task::all();
+        $tasks = Task::all()->where('project_id', $projectId);
 //        return $tasks->sort();
-        return  $tasks->sortByDesc('priority');
+        return  $tasks->sortBy('priority');
     }
 
     public function getById(int $taskId){
@@ -69,7 +69,30 @@ class TaskService
     }
 
 
-    public function reOrder($project_id, $task_id, $start, $end){
+    public function reOrder($project_id, $start, $end){
+        // Save details of selected task
+        $selected_task = Task::where('project_id', '=', $project_id)
+            ->where('priority', '=', $end)->get()->all();
+        if($selected_task){
+            // Update all tasks except selected task with updating priority+1
+            $tasks = Task::where('priority', '>=', $start)
+                -> where('project_id', '=', $project_id)
+                ->where('priority', '!=', $end)
+                ->update(['priority' =>  DB::raw('priority+1')]);
+            //Assign selected task priority to desired priority
+            return Task::where('id', $selected_task[0]['id'])->update(['priority' => $start]);
+        } else {
+            return false;
+        }
+
+
+
+
+//        echo $selected_task->priority;
+//        exit;
+//        exit;
+
+
 
     }
 
