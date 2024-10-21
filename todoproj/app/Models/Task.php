@@ -26,12 +26,15 @@ class Task extends Model
     ];
 
 
-    public function project(){
+    public function project()
+    {
         return $this->belongsTo(Project::class);
     }
 
 
-    public function getCreatedAttribute(){
+    public function getCreatedAttribute()
+    {
         return $this->created_at->diffForHumans();
     }
+
 }
