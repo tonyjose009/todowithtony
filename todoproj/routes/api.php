@@ -1,11 +1,10 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 
 
-Route::group(['prefix' => '/tasks', 'as' => 'tasks.'], function (){
+Route::group(['prefix' => '/tasks', 'as' => 'tasks.'], function () {
     Route::get('/', [TaskController::class, 'list']);
     Route::get('list', [TaskController::class, 'list']);
     Route::get('/{id}', [TaskController::class, 'get'])

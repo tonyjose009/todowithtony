@@ -22,28 +22,14 @@ class TaskService
 
     public function list(int $projectId)
     {
-
-        $tasks = Task::all()->where('project_id', $projectId);
-//        return $tasks->sort();
-        return $tasks->sortBy('priority');
+        $tasks = Task::with('project')->where('project_id', $projectId);
+        return $tasks->orderBy('priority')->get();
     }
 
     public function getById(int $taskId)
     {
         $task = Task::find($taskId);
         return $task;
-    }
-
-    public function update(int $taskId, $task)
-    {
-        $taskF = Task::find($taskId);
-        if ($taskF) {
-            return $taskF->update($task);
-
-        } else {
-            return false;
-        }
-
     }
 
     public function store($taskData)
@@ -75,6 +61,17 @@ class TaskService
 
     }
 
+    public function update(int $taskId, $task)
+    {
+        $taskF = Task::find($taskId);
+        if ($taskF) {
+            return $taskF->update($task);
+
+        } else {
+            return false;
+        }
+
+    }
 
     public function reOrder($project_id, $start, $end)
     {

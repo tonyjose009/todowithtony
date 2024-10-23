@@ -26,36 +26,47 @@ class TaskController extends Controller
 
     public function index()
     {
+//        $projects = (new ProjectService())->getAll();
+////        return  view('tasks.index', compact($projects));
+//        return  $projects;
+
         $projects = (new ProjectService())->getAll();
-//        return  view('tasks.index', compact($projects));
-        return  $projects;
+
+        return view('tasks.index', [
+            'projects' => $projects,
+        ]);
+
     }
 
 
-
-    public function list(ListTasksRequest $request)
+    public function list(ListTasksRequest $request): JsonResponse
     {
         $tasks = $this->taskService->list($request->get('project_id'));
         return response()->json([
             'success' => true,
             'tasks' => $tasks,
-            "count" => count($tasks),
-            'message' => "Tasks retrieved successfully",
+            'message' => "Tasks retrieved successfully.",
         ]);
+
+        return response()->json([
+            'success' => true,
+            'tasks' => $tasks,
+            'message' => "Tasks retrieved successfully.",
+        ]); // 200
     }
 
     public function get(int $task_id)
     {
 
         $task = $this->taskService->getById($task_id);
-        if($task){
-            return  response()->json([
+        if ($task) {
+            return response()->json([
                 'success' => true,
                 'task' => $task,
                 'message' => "task retrieved successfully",
             ]);
         } else {
-            return  response()->json([
+            return response()->json([
                 'success' => false,
                 'message' => "task not found",
             ], 404);
@@ -67,13 +78,13 @@ class TaskController extends Controller
     {
 
         $ret = $this->taskService->store($request->all());
-        if($ret){
-            return  response()->json([
+        if ($ret) {
+            return response()->json([
                 'success' => true,
                 'message' => "task created successfully",
             ]);
         } else {
-            return  response()->json([
+            return response()->json([
                 'success' => false,
                 'message' => "error in creating task",
             ]);
@@ -85,13 +96,13 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, int $taskId)
     {
         $up = $this->taskService->update($taskId, $request->all());
-        if($up) {
-            return  response()->json([
+        if ($up) {
+            return response()->json([
                 'success' => true,
                 'message' => "task updated successfully",
             ]);
         } else {
-            return  response()->json([
+            return response()->json([
                 'success' => false,
                 'message' => "task not updated",
             ], 404);
@@ -101,7 +112,7 @@ class TaskController extends Controller
     public function delete(int $taskId)
     {
         $ret = $this->taskService->delete($taskId);
-        if($ret){
+        if ($ret) {
             return response()->json([
                 'success' => true,
                 'message' => "Task deleted successfully.",
@@ -120,7 +131,7 @@ class TaskController extends Controller
         $start = $request->get('start');
         $end = $request->get('end');
         $reorder_status = $this->taskService->reOrder($project_id, $start, $end);
-        if($reorder_status){
+        if ($reorder_status) {
             return response()->json([
                 'success' => true,
                 'message' => "Tasks reordered successfully.",
